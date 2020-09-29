@@ -1,0 +1,22 @@
+xyz_cleaner:
+
+    # Publish all joint states -----------------------------------
+    joint_state_controller:
+      type: joint_state_controller/JointStateController
+      publish_rate: 50
+
+    # Position Controllers ---------------------------------------
+    x_joint_position_controller:
+      type: velocity_controllers/JointPositionController
+      joint: x_joint
+      pid: {p: 300.0, i: 20.0, d: 1.0}
+
+    y_joint_position_controller:
+      type: velocity_controllers/JointPositionController
+      joint: y_joint
+      pid: {p: 300.0, i: 20.0, d: 0.5}
+
+    z_joint_position_controller:
+      type: velocity_controllers/JointPositionController
+      joint: z_joint
+      pid: {p: 250.0, i: 20.0, d: 0.2}       

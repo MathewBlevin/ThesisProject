@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<robot name="xyz_cleaner">
+
+  <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+            <robotNamespace>/xyz_cleaner</robotNamespace>
+	    <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>	
+        </plugin>
+  </gazebo> 
+
+<!--LINK DEFINITIONS-->
+
+  <link name="world"/>
+
+  <joint name="fixed" type="fixed">
+     <parent link="world"/>
+     <child link="base_link"/>
+  </joint>
+
+  <link name="base_link">
+        <inertial>
+            <origin
+                xyz="-1.275898 0.517869 0.649254"
+                rpy="0 0 0" />
+            <mass
+                value="104.506478" />
+            <!--Inertia Tensor-->
+            <inertia
+                ixx="51.222585"
+                ixy="-0.041009"
+                ixz="0.032757"
+                iyy="203.556536"
+                iyz="-0.292581"
+                izz="215.851890" />
+        </inertial>
+
+        <visual>
+            <origin
+                xyz="0 0 0"
+                rpy="0 0 0" />
+            <geometry>
+                <mesh
+                filename="package://xyz_cleaner_description/meshes/base_link.STL" />
+            </geometry>
+            <material
+                name="">
+                <color
+                rgba="0.75294 0.75294 0.75294 1" />
+            </material>
+        </visual>
+
+        <collision>
+            <origin
+                xyz="0 0 0"
+                rpy="0 0 0" />
+            <geometry>
+                <mesh
+                    filename="package://xyz_cleaner_description/meshes/base_link.STL" />
+                <!--<box size="0.1 0.1 0.1" />-->    
+            </geometry>
+        </collision>
+  </link>
+
+  <gazebo reference="base_link">
+    <collision>
+      <surface>
+        <contact>
+          <collide_bitmask>10</collide_bitmask>
+          <ode>
+            <kp>100000</kp>
+            <kd>100000</kd>
+          </ode>
+        </contact>
+        <friction>
+          <ode>
+            <mu>10</mu>
+            <mu2>10</mu2>            
+          </ode>
+        </friction>
+      </surface>
+    </collision>
+    <material>Gazebo/Grey</material>
+  </gazebo>
+  
+  <link name="x_link">
+        <inertial>
+            <origin
+                xyz="1.350074 0.145273 -0.115411"
+                rpy="0 0 0" />
+            <mass
+                value="19.389833" />
+            <!--Inertia Tensor-->
+            <inertia
+                ixx="27.570737"
+                ixy="0.016464"
+                ixz="0.005267"
+                iyy="0.095854"
+                iyz="0.017193"
+                izz="27.549790" />
+        </inertial>
+
+        <visual>
+            <origin
+                xyz="0 0 0"
+                rpy="0 0 -1.570793" />
+            <geometry>
+                <mesh
+                filename="package://xyz_cleaner_description/meshes/x_link.STL" />
+            </geometry>
+            <material
+                name="">
+                <color
+                rgba="1 0 0 1" />
+            </material>
+        </visual>
+
+        <collision>
+            <origin
+                xyz="0 0 0"
+                rpy="0 0 0" />
+            <geometry>
+                <mesh
+                filename="package://xyz_cleaner_description/meshes/x_link.STL" />
+                <!--<box size="0.1 0.1 0.1" />--> 
+            </geometry>
+        </collision>
+  </link>
+
+  <gazebo reference="x_link">
+    <collision>
+      <surface>
+        <contact>
+          <collide_bitmask>10</collide_bitmask>
+          <ode>
+            <kp>100000</kp>
+            <kd>100000</kd>
+          </ode>
+        </contact>
+        <friction>
+          <ode>
+            <mu>10</mu>
+            <mu2>10</mu2>            
+          </ode>
+        </friction>
+      </surface>
+    </collision>
+    <material>Gazebo/Red</material>
+  </gazebo>  
+
+  <joint name="x_joint" type="prismatic">
+        <origin
+            xyz="0.05 0.1542 1.1549"
+            rpy="-1.570793 -1.570793 0" />
+        <parent link="base_link" />
+        <child link="x_link" />
+        <axis
+            xyz="0 0 1" />
+        <limit
+            lower="0"
+            upper="0.9136"
+            effort="1250"
+            velocity="0.8" />
+        <!--<safety_controller
+            soft_upper="-0.4568"
+            soft_lower="0.4568"
+            k_velocity="0" />-->
+  </joint>
+
+  <transmission name="tran1">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="x_joint">
+            <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="motor1">
+            <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+  </transmission>
+
+  <link name="y_link">
+        <inertial>
+            <origin
+                xyz="0 0 0.010248"
+                rpy="0 0 0" />
+            <mass
+                value="1.661965" />
+            <!--Inertia Tensor-->
+            <inertia
+                ixx="0.004943"
+                ixy="0.0"
+                ixz="0.0"
+                iyy="0.004223"
+                iyz="0.0"
+                izz="0.002155" />
+        </inertial>
+
+        <visual>
+            <origin
+                xyz="0 0 0"
+                rpy="0 -1.570793 0" />
+            <geometry>
+                <mesh
+                filename="package://xyz_cleaner_description/meshes/y_link.STL" />
+            </geometry>
+            <material
+                name="">
+                <color
+                rgba="0 1 0 1" />
+            </material>
+        </visual>
+
+        <collision>
+            <origin
+                xyz="0 0 0"
+                rpy="0 0 0" />
+            <geometry>
+                <mesh
+                filename="package://xyz_cleaner_description/meshes/y_link.STL" />
+                <!--<box size="0.1 0.1 0.1" />--> 
+            </geometry>
+        </collision>
+  </link>
+
+  <gazebo reference="y_link">
+    <collision>
+      <surface>
+        <contact>
+          <collide_bitmask>10</collide_bitmask>
+          <ode>
+            <kp>100000</kp>
+            <kd>100000</kd>
+          </ode>
+        </contact>
+        <friction>
+          <ode>
+            <mu>10</mu>
+            <mu2>10</mu2>            
+          </ode>
+        </friction>
+      </surface>
+    </collision>
+    <material>Gazebo/Green</material>
+  </gazebo>   
+
+  <joint name="y_joint" type="prismatic">
+        <origin
+            xyz="0.18135 -0.159 -0.022"
+            rpy="1.570793 -1.570793 0" />
+        <parent link="x_link" />
+        <child link="y_link" />
+        <axis
+            xyz="0 0 1" />
+        <limit
+            lower="0"
+            upper="2.335"
+            effort="1485"
+            velocity="0.8" />
+        <!--<safety_controller
+            soft_upper="-1.1675"
+            soft_lower="1.1675"
+            k_velocity="0" />-->
+  </joint>
+
+ <transmission name="tran2">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="y_joint">
+            <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="motor2">
+            <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+  </transmission> 
+
+  <link name="z_link">
+        <inertial>
+            <origin
+                xyz="0 -0.041301 0.197648"
+                rpy="0 0 0" />
+            <mass
+                value="2.124120" />
+            <!--Inertia Tensor-->
+            <inertia
+                ixx="0.298148"
+                ixy="-0.009976"
+                ixz="0.0"
+                iyy="0.002722"
+                iyz="0.0"
+                izz="0.298622" />
+        </inertial>
+
+        <visual>
+            <origin
+                xyz="0 0 -0.406"
+                rpy="0 0 1.570793" />
+            <geometry>
+                <mesh
+                filename="package://xyz_cleaner_description/meshes/z_link.STL" />
+            </geometry>
+            <material
+                name="">
+                <color
+                rgba="0 0 1 1" />
+            </material>
+        </visual>
+
+        <collision>
+            <origin
+                xyz="0 0 0"
+                rpy="0 0 0" />
+            <geometry>
+                <mesh
+                filename="package://xyz_cleaner_description/meshes/z_link.STL" />
+                <!--<box size="0.1 0.1 0.1" />--> 
+            </geometry>
+        </collision>
+  </link>
+
+  <gazebo reference="z_link">
+    <collision>
+      <surface>
+        <contact>
+          <collide_bitmask>10</collide_bitmask>
+          <ode>
+            <kp>100000</kp>
+            <kd>100000</kd>
+          </ode>
+        </contact>
+        <friction>
+          <ode>
+            <mu>10</mu>
+            <mu2>10</mu2>            
+          </ode>
+        </friction>
+      </surface>
+    </collision>
+    <material>Gazebo/Blue</material>
+  </gazebo> 
+
+  <joint name="z_joint" type="prismatic">
+        <origin
+            xyz="0.012 -0.059 0"
+            rpy="-1.570793 0 0" />
+        <parent link="y_link" />
+        <child link="z_link" />
+        <axis
+            xyz="0 0 1" />
+        <limit
+            lower="0"
+            upper="0.812"
+            effort="400"
+            velocity="0.9" />
+  </joint> 
+
+  <transmission name="tran3">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="z_joint">
+            <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="motor3">
+            <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+  </transmission>   
+
+  <link name="ee_link">
+        <visual>
+            <origin
+                xyz="0 0 0"
+                rpy="0 0 0" />
+            <geometry> 
+                    <box size="0.001 0.001 0.001" />
+            </geometry>
+            <material
+                name="">
+                <color
+                rgba="0 0 1 1" />
+            </material>
+        </visual>
+  </link>
+
+  <gazebo reference="ee_link">
+        <material>Gazebo/Blue</material>
+  </gazebo> 
+
+  <joint name="ee_joint" type="fixed">
+        <origin
+            xyz="0.13 0.0 0.2916"
+            rpy="0 0 0" />
+        <parent link="z_link" />
+        <child link="ee_link" />
+  </joint>  
+
+</robot>
